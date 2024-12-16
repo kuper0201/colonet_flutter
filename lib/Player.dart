@@ -1,12 +1,13 @@
 import 'dart:async';
 
 import 'package:flame/components.dart';
+import 'package:flame/image_composition.dart';
 import 'package:flutter/src/services/hardware_keyboard.dart';
 import 'package:flutter/src/services/keyboard_key.g.dart';
 import 'package:flutter_gm/main.dart';
 
 class Player extends SpriteComponent with KeyboardHandler, HasGameReference<Game> {
-  late final _sprite;
+  late final Image _sprite;
   final Vector2 velocity = Vector2.zero();
   final double moveSpeed = 200;
   int horDir = 0;
@@ -42,8 +43,9 @@ class Player extends SpriteComponent with KeyboardHandler, HasGameReference<Game
   @override
   FutureOr<void> onLoad() async {
     super.onLoad();
-    _sprite = await game.images.load('player.png');
+    _sprite = await game.images.fromCache('player.png');
+    position = game.camera.viewfinder.position;
     sprite = Sprite(_sprite);
-    game.camera.follow(this);
+    anchor = Anchor.center;
   } 
 }

@@ -1,7 +1,7 @@
 import 'dart:async';
+import 'dart:ui';
 
 import 'package:flame/components.dart';
-import 'package:flame/flame.dart';
 import 'package:flutter_gm/main.dart';
 
 class TileComponent extends SpriteComponent with HasGameReference<Game> {
@@ -13,7 +13,15 @@ class TileComponent extends SpriteComponent with HasGameReference<Game> {
   @override
   Future<void> onLoad() async {
     super.onLoad();
-    final image = await Flame.images.load('tile.png');
+    final image = await game.images.fromCache('tile.png');
     sprite = Sprite(image);
+  }
+
+  @override void render(Canvas canvas) {
+    super.render(canvas);
+
+    if(!game.camera.canSee(this)) {
+      removeFromParent();
+    }
   }
 }
