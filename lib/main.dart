@@ -135,11 +135,16 @@ class Game extends FlameGame with HasKeyboardHandlerComponents {
           final Vector2 tilePosition = Vector2(tileX * tileSize.toDouble(), tileY * tileSize.toDouble());
           final tile = TileComponent.init(tilePosition);
           world.add(tile);
-          print("add");
           visibleTiles[key] = tile; // 타일을 캐싱에 추가
         }
       }
     }
+
+    // final keysToRemove = visibleTiles.keys.where((key) => !camera.canSee(visibleTiles[key]!)).toList();
+    // for(final key in keysToRemove) {
+    //   world.remove(visibleTiles[key]!);
+    //   visibleTiles.remove(key);
+    // }
 
     // 화면에서 벗어난 타일 제거
     // final keysToRemove = visibleTiles.keys.where((key) => !newVisibleKeys.contains(key)).toList();

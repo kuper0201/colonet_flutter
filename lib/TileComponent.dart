@@ -19,9 +19,5 @@ class TileComponent extends SpriteComponent with HasGameReference<Game> {
 
   @override void render(Canvas canvas) {
     super.render(canvas);
-
-    if(!game.camera.canSee(this)) {
-      removeFromParent();
-    }
   }
 }
