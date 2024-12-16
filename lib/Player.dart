@@ -44,7 +44,7 @@ class Player extends SpriteComponent with KeyboardHandler, HasGameReference<Game
   FutureOr<void> onLoad() async {
     super.onLoad();
     _sprite = await game.images.fromCache('player.png');
-    position = game.camera.viewfinder.position;
+    priority = 100;
     sprite = Sprite(_sprite);
     anchor = Anchor.center;
   } 
