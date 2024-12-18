@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import 'package:flame/camera.dart';
 import 'package:flame/components.dart';
 import 'package:flame/events.dart';
 import 'package:flame/experimental.dart';
@@ -29,6 +30,7 @@ class ColonetGame extends FlameGame with HasKeyboardHandlerComponents, HasCollis
 
     world.add(_player);
     camera.viewfinder.anchor = Anchor.center;
+    camera.viewport = FixedResolutionViewport(resolution: Vector2(1920, 1080));
     camera.follow(_player);
 
     _updateVisibleTiles(); // 초기 타일 생성
