@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flame/components.dart';
 import 'package:flame/events.dart';
 import 'package:flame/experimental.dart';
@@ -8,6 +10,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_gm/Player.dart';
 import 'package:flutter_gm/GrassTileComponent.dart';
+import 'package:flutter_gm/WaterTileComponent.dart';
 
 void main() {
   runApp(GameWidget(game: ColonetGame()));
@@ -15,13 +18,21 @@ void main() {
 
 class ColonetGame extends FlameGame with HasKeyboardHandlerComponents {
   late final Player _player;
-  final Map<String, TileComponent> visibleTiles = {}; // 보이는 타일 캐싱
+  final Map<String, SpriteComponent> visibleTiles = {}; // 보이는 타일 캐싱
   final int tileSize = 32; // 타일 크기 상수
+
+  final testMap = [
+    [0,1,1,1,1,1,1,1,1,1],
+    [0,0,0,0,0,0,1,1,1,1],
+    [1,1,0,0,0,0,0,0,1,1],
+    [1,1,1,1,0,0,0,0,0,0],
+    [1,1,1,0,0,0,0,0,0,0],
+  ];
 
   @override
   Future<void> onLoad() async {
     await super.onLoad();
-    await images.loadAll(['player.png', 'grass.png']);
+    await images.loadAll(['player.png', 'grass.png', 'water.png']);
     _player = Player();
 
     world.add(_player);
@@ -47,9 +58,17 @@ class ColonetGame extends FlameGame with HasKeyboardHandlerComponents {
 
         if (!visibleTiles.containsKey(key)) {
           final Vector2 tilePosition = Vector2(tileX * tileSize.toDouble(), tileY * tileSize.toDouble());
-          final tile = TileComponent.init(tilePosition);
-          world.add(tile);
-          visibleTiles[key] = tile; // 타일을 캐싱에 추가
+          final randInt = Random().nextInt(2);
+          if(randInt == 0) {
+            final tile = GrassTileComponent.init(tilePosition);
+            world.add(tile);
+            visibleTiles[key] = tile; // 타일을 캐싱에 추가
+          } else {
+            final tile = WaterTileComponent.init(tilePosition);
+            world.add(tile);
+            visibleTiles[key] = tile; // 타일을 캐싱에 추가
+          }
+          
         }
       }
     }

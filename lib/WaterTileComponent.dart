@@ -4,8 +4,8 @@ import 'dart:ui';
 import 'package:flame/components.dart';
 import 'package:flutter_gm/main.dart';
 
-class TileComponent extends SpriteComponent with HasGameReference<ColonetGame> {
-  TileComponent.init(Vector2 pos) {
+class WaterTileComponent extends SpriteComponent with HasGameReference<ColonetGame> {
+  WaterTileComponent.init(Vector2 pos) {
     position = pos;
     size = Vector2(32, 32);
   }
