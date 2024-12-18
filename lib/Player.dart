@@ -1,15 +1,18 @@
 import 'dart:async';
 
+import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
 import 'package:flame/image_composition.dart';
 import 'package:flutter/src/services/hardware_keyboard.dart';
 import 'package:flutter/src/services/keyboard_key.g.dart';
+import 'package:flutter_gm/WaterTileComponent.dart';
 import 'package:flutter_gm/main.dart';
 
-class Player extends SpriteComponent with KeyboardHandler, HasGameReference<ColonetGame> {
+class Player extends SpriteComponent with KeyboardHandler, HasGameReference<ColonetGame>, CollisionCallbacks {
   late final Image _sprite;
   final Vector2 velocity = Vector2.zero();
   final double moveSpeed = 200;
+  Vector2 pos = Vector2.zero();
   int horDir = 0;
   int verDir = 0;
 
@@ -30,7 +33,8 @@ class Player extends SpriteComponent with KeyboardHandler, HasGameReference<Colo
   void update(double dt) {
     velocity.x = horDir * moveSpeed;
     velocity.y = verDir * moveSpeed;
-    position += velocity * dt;
+    pos = velocity * dt;
+    position += pos;
     super.update(dt);
 
     if (horDir < 0 && scale.x > 0) {
@@ -39,13 +43,23 @@ class Player extends SpriteComponent with KeyboardHandler, HasGameReference<Colo
       flipHorizontally();
     }
   }
+
+  @override
+  void onCollision(Set<Vector2> intersectionPoints, PositionComponent other) {
+    super.onCollision(intersectionPoints, other);
+    if (other is WaterTileComponent) {
+      position -= pos; // 이전 위치로 되돌림
+    }
+  }
   
   @override
   FutureOr<void> onLoad() async {
     super.onLoad();
-    _sprite = await game.images.fromCache('player.png');
+    size = Vector2(32, 32);
+    _sprite = game.images.fromCache('player.png');
     priority = 100;
     sprite = Sprite(_sprite);
     anchor = Anchor.center;
+    add(CircleHitbox());
   } 
 }

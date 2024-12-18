@@ -16,18 +16,10 @@ void main() {
   runApp(GameWidget(game: ColonetGame()));
 }
 
-class ColonetGame extends FlameGame with HasKeyboardHandlerComponents {
+class ColonetGame extends FlameGame with HasKeyboardHandlerComponents, HasCollisionDetection {
   late final Player _player;
   final Map<String, SpriteComponent> visibleTiles = {}; // 보이는 타일 캐싱
   final int tileSize = 32; // 타일 크기 상수
-
-  final testMap = [
-    [0,1,1,1,1,1,1,1,1,1],
-    [0,0,0,0,0,0,1,1,1,1],
-    [1,1,0,0,0,0,0,0,1,1],
-    [1,1,1,1,0,0,0,0,0,0],
-    [1,1,1,0,0,0,0,0,0,0],
-  ];
 
   @override
   Future<void> onLoad() async {
@@ -58,8 +50,8 @@ class ColonetGame extends FlameGame with HasKeyboardHandlerComponents {
 
         if (!visibleTiles.containsKey(key)) {
           final Vector2 tilePosition = Vector2(tileX * tileSize.toDouble(), tileY * tileSize.toDouble());
-          final randInt = Random().nextInt(2);
-          if(randInt == 0) {
+          final randInt = Random().nextInt(100);
+          if(randInt <= 90) {
             final tile = GrassTileComponent.init(tilePosition);
             world.add(tile);
             visibleTiles[key] = tile; // 타일을 캐싱에 추가
