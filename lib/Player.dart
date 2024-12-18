@@ -6,7 +6,7 @@ import 'package:flutter/src/services/hardware_keyboard.dart';
 import 'package:flutter/src/services/keyboard_key.g.dart';
 import 'package:flutter_gm/main.dart';
 
-class Player extends SpriteComponent with KeyboardHandler, HasGameReference<Game> {
+class Player extends SpriteComponent with KeyboardHandler, HasGameReference<ColonetGame> {
   late final Image _sprite;
   final Vector2 velocity = Vector2.zero();
   final double moveSpeed = 200;

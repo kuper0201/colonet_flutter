@@ -4,7 +4,7 @@ import 'dart:ui';
 import 'package:flame/components.dart';
 import 'package:flutter_gm/main.dart';
 
-class TileComponent extends SpriteComponent with HasGameReference<Game> {
+class TileComponent extends SpriteComponent with HasGameReference<ColonetGame> {
   TileComponent.init(Vector2 pos) {
     position = pos;
     size = Vector2(32, 32);
@@ -13,7 +13,7 @@ class TileComponent extends SpriteComponent with HasGameReference<Game> {
   @override
   Future<void> onLoad() async {
     super.onLoad();
-    final image = await game.images.fromCache('grass.png');
+    final image = game.images.fromCache('water.png');
     sprite = Sprite(image);
   }
 
