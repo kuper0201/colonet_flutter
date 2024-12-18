@@ -90,7 +90,7 @@ import 'package:flame/sprite.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_gm/Player.dart';
-import 'package:flutter_gm/TileComponent.dart';
+import 'package:flutter_gm/GrassTileComponent.dart';
 
 void main() {
   runApp(GameWidget(game: Game()));
@@ -104,7 +104,7 @@ class Game extends FlameGame with HasKeyboardHandlerComponents {
   @override
   Future<void> onLoad() async {
     await super.onLoad();
-    await images.loadAll(['player.png', 'tile.png']);
+    await images.loadAll(['player.png', 'grass.png']);
     _player = Player();
 
     world.add(_player);
@@ -115,14 +115,11 @@ class Game extends FlameGame with HasKeyboardHandlerComponents {
   }
 
   void _updateVisibleTiles() {
-    final int range = 5; // 플레이어 주변의 타일 범위 (5x5)
+    final int range = 13; // 플레이어 주변의 타일 범위 (13x13)
     final int playerX = (_player.position.x / tileSize).floor();
     final int playerY = (_player.position.y / tileSize).floor();
 
-    print("$playerX, $playerY");
-
     final Set<String> newVisibleKeys = {}; // 새로 보이는 타일들의 키 저장
-
     for (int i = -range; i <= range; i++) {
       for (int j = -range; j <= range; j++) {
         final int tileX = playerX + i;
@@ -139,19 +136,12 @@ class Game extends FlameGame with HasKeyboardHandlerComponents {
         }
       }
     }
-
-    // final keysToRemove = visibleTiles.keys.where((key) => !camera.canSee(visibleTiles[key]!)).toList();
-    // for(final key in keysToRemove) {
-    //   world.remove(visibleTiles[key]!);
-    //   visibleTiles.remove(key);
-    // }
-
-    // 화면에서 벗어난 타일 제거
-    // final keysToRemove = visibleTiles.keys.where((key) => !newVisibleKeys.contains(key)).toList();
-    // for (final key in keysToRemove) {
-    //   world.remove(visibleTiles[key]!); // Flame 게임에서 타일 제거
-    //   visibleTiles.remove(key); // 캐싱에서 제거
-    // }
+    
+    final keysToRemove = visibleTiles.keys.where((key) => !newVisibleKeys.contains(key)).toList();
+    for(final key in keysToRemove) {
+      world.remove(visibleTiles[key]!);
+      visibleTiles.remove(key);
+    }
   }
 
   @override
