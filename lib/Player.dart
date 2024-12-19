@@ -17,6 +17,9 @@ class Player extends SpriteComponent with KeyboardHandler, HasGameReference<Colo
   int verDir = 0;
 
   @override
+  bool debugMode = false; // 디버그 모드 활성화
+
+  @override
   bool onKeyEvent(KeyEvent event, Set<LogicalKeyboardKey> keysPressed) {
     horDir = 0;
     horDir += (keysPressed.contains(LogicalKeyboardKey.keyA) || keysPressed.contains(LogicalKeyboardKey.arrowLeft)) ? -1 : 0;
@@ -55,7 +58,7 @@ class Player extends SpriteComponent with KeyboardHandler, HasGameReference<Colo
   @override
   FutureOr<void> onLoad() async {
     super.onLoad();
-    size = Vector2(32, 32);
+    size = Vector2(30, 30);
     _sprite = game.images.fromCache('player.png');
     priority = 100;
     sprite = Sprite(_sprite);

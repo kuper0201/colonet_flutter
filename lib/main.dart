@@ -42,8 +42,8 @@ class ColonetGame extends FlameGame with HasKeyboardHandlerComponents, HasCollis
     final int playerY = (_player.position.y / tileSize).floor();
 
     final Set<String> newVisibleKeys = {}; // 새로 보이는 타일들의 키 저장
-    for (int i = -range; i <= range; i++) {
-      for (int j = -range; j <= range; j++) {
+    for (int i = -30; i <= 30; i++) {
+      for (int j = -17; j <= 17; j++) {
         final int tileX = playerX + i;
         final int tileY = playerY + j;
 
