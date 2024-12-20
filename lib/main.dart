@@ -22,6 +22,8 @@ class ColonetGame extends FlameGame with HasKeyboardHandlerComponents, HasCollis
   final Map<String, SpriteComponent> visibleTiles = {}; // 보이는 타일 캐싱
   final int tileSize = 32; // 타일 크기 상수
 
+  List<List<int>> map = [];
+
   @override
   Future<void> onLoad() async {
     await super.onLoad();
@@ -33,11 +35,26 @@ class ColonetGame extends FlameGame with HasKeyboardHandlerComponents, HasCollis
     camera.viewport = FixedResolutionViewport(resolution: Vector2(1920, 1080));
     camera.follow(_player);
 
+    for(int i = 0; i < 1000; i++) {
+      map.add([]);
+      for(int j = 0; j < 1000; j++) {
+        if(i == 0 || i == 999 || j == 0 || j == 999) {
+          map[i].add(1);
+          continue;
+        }
+        final randInt = Random().nextInt(100);
+        if(randInt <= 90) {
+          map[i].add(0);
+        } else {
+          map[i].add(1);
+        }
+      }
+    }
+
     _updateVisibleTiles(); // 초기 타일 생성
   }
 
   void _updateVisibleTiles() {
-    final int range = 13; // 플레이어 주변의 타일 범위 (13x13)
     final int playerX = (_player.position.x / tileSize).floor();
     final int playerY = (_player.position.y / tileSize).floor();
 
@@ -53,7 +70,11 @@ class ColonetGame extends FlameGame with HasKeyboardHandlerComponents, HasCollis
         if (!visibleTiles.containsKey(key)) {
           final Vector2 tilePosition = Vector2(tileX * tileSize.toDouble(), tileY * tileSize.toDouble());
           final randInt = Random().nextInt(100);
-          if(randInt <= 90) {
+          if(tileX + 300 < 0 || tileX + 300 >= 1000 || tileY + 300 < 0 || tileY + 300 >= 1000) {
+            continue;
+          }
+          
+          if(map[tileX + 300][tileY + 300] == 0) {
             final tile = GrassTileComponent.init(tilePosition);
             world.add(tile);
             visibleTiles[key] = tile; // 타일을 캐싱에 추가
